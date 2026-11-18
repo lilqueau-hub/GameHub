@@ -22,6 +22,15 @@ class Jeu
     #[ORM\ManyToOne(inversedBy: 'jeus')]
     private ?Administrateur $administrateur = null;
 
+    #[ORM\Column]
+    private ?bool $age_minimum = null;
+
+    #[ORM\Column]
+    private ?bool $nombre_joueurs = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $titre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +68,42 @@ class Jeu
     public function setAdministrateur(?Administrateur $administrateur): static
     {
         $this->administrateur = $administrateur;
+
+        return $this;
+    }
+
+    public function isAgeMinimum(): ?bool
+    {
+        return $this->age_minimum;
+    }
+
+    public function setAgeMinimum(bool $age_minimum): static
+    {
+        $this->age_minimum = $age_minimum;
+
+        return $this;
+    }
+
+    public function isNombreJoueurs(): ?bool
+    {
+        return $this->nombre_joueurs;
+    }
+
+    public function setNombreJoueurs(bool $nombre_joueurs): static
+    {
+        $this->nombre_joueurs = $nombre_joueurs;
+
+        return $this;
+    }
+
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): static
+    {
+        $this->titre = $titre;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SoireeJeuRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Clock\DatePoint;
@@ -23,6 +25,20 @@ class SoireeJeu
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 0)]
     private ?string $nombre_√max_participants = null;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'soireeJeu')]
+    private Collection $reservation;
+
+    #[ORM\ManyToOne(inversedBy: 'soireeJeus')]
+    private ?Administrateur $ad√ministrateur = null;
+
+    public function __construct()
+    {
+        $this->reservation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +77,48 @@ class SoireeJeu
     public function setNombre√maxParticipants(string $nombre_√max_participants): static
     {
         $this->nombre_√max_participants = $nombre_√max_participants;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservation(): Collection
+    {
+        return $this->reservation;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservation->contains($reservation)) {
+            $this->reservation->add($reservation);
+            $reservation->setSoireeJeu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservation->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getSoireeJeu() === $this) {
+                $reservation->setSoireeJeu(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAd√ministrateur(): ?Administrateur
+    {
+        return $this->ad√ministrateur;
+    }
+
+    public function setAd√ministrateur(?Administrateur $ad√ministrateur): static
+    {
+        $this->ad√ministrateur = $ad√ministrateur;
 
         return $this;
     }

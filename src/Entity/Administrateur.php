@@ -33,10 +33,17 @@ class Administrateur
     #[ORM\OneToMany(targetEntity: Categorie::class, mappedBy: 'administrateur')]
     private Collection $categories;
 
+    /**
+     * @var Collection<int, SoireeJeu>
+     */
+    #[ORM\OneToMany(targetEntity: SoireeJeu::class, mappedBy: 'ad√ministrateur')]
+    private Collection $soireeJeus;
+
     public function __construct()
     {
         $this->jeus = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->soireeJeus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,6 +129,36 @@ class Administrateur
             // set the owning side to null (unless already changed)
             if ($category->getAdministrateur() === $this) {
                 $category->setAdministrateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SoireeJeu>
+     */
+    public function getSoireeJeus(): Collection
+    {
+        return $this->soireeJeus;
+    }
+
+    public function addSoireeJeu(SoireeJeu $soireeJeu): static
+    {
+        if (!$this->soireeJeus->contains($soireeJeu)) {
+            $this->soireeJeus->add($soireeJeu);
+            $soireeJeu->setAd√ministrateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSoireeJeu(SoireeJeu $soireeJeu): static
+    {
+        if ($this->soireeJeus->removeElement($soireeJeu)) {
+            // set the owning side to null (unless already changed)
+            if ($soireeJeu->getAd√ministrateur() === $this) {
+                $soireeJeu->setAd√ministrateur(null);
             }
         }
 
