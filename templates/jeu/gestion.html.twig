@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de jeu vidéo{% endblock %}
+
+{% block body %}
+    <form action="{{ path('jeu_gestion') }}" method="GET">
+        <input type="text" name="jeu_gestion" placeholder="Ajout de jeu" value ="{{ jeu_gestion }}">
+        <button type="submit">Ajouter un jeu vidéo</button>
+    </form>
+
+    <form action="{{ path('jeu_gestion') }}" method="GET">
+        <input type="text" name="jeu_gestion" placeholder="Modifier un jeu existant" value ="{{ jeu_gestion }}">
+        <button type="submit">Modifier un jeu existant</button>
+    </form>
+
+    <form action="{{ path('jeu_gestion') }}" method="GET">
+        <input type="text" name="jeu_gestion" placeholder="Supprimer un jeu" value ="{{ jeu_gestion }}">
+        <button type="submit">Supprimer un jeu</button>
+    </form>
+
+    <a href ="{{ path('app_jeu')}}">Consulter le catalogue de jeux existants</a>
+    <form action="{{ path('') }}" method="GET">
+        <input type="text" name="titre" placeholder="Saisir un titre" value ="{{ titre }}">
+        <button type="submit">Consulter la liste de jeux vidéos existants</button>
+    </form>
+
+{% endblock %}
