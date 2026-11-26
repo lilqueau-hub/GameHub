@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
-use App\Controller\Admin\CategorieCrudController;
 use App\Controller\Admin\JeuCrudController;
 use App\Controller\Admin\ReservationCrudController;
-use App\Controller\Admin\SoireeJeuCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 
-final class DashboardController extends AbstractController
+
+
+#[AdminDashboard(routePath: '/admin', routeName:'admin')]
+class DashboardController extends AbstractDashboardController
 {
-    #[Route('/dashboard', name: 'app_dashboard')]
     public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
         $this->adminUrlGenerator = $adminUrlGenerator;
@@ -29,25 +31,63 @@ final class DashboardController extends AbstractController
                 ->generateUrl()
         );
     }
-    
-    public function configureDashboard(): Dashboard{
+
+    public function configureDashboard(): Dashboard
+    {
         return Dashboard::new()
-            ->setTitle('Gamehub');
+            ->setTitle('Game-Hub');
     }
 
-    public function configureMenuItems(): iterable 
+    #[Override]
+    public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
-        yield MenuItem::section('Catalogue');
+        // Gestion des jeux
+        yield MenuItem::section('Jeux');
+
+        yield MenuItem::linkTo(JeuCrudController::class, 'Jeux', 'fas fa-book');
+        yield MenuItem::linkTo(CategorieCrudController::class, 'Catégories');
 
         // Gestion de soirées
-        yield MenuItem::linkTo(SoireeJeuCrudController::class, 'Soirée jeux');
-        yield MenuItem::linkTo(ReservationCrudController::class, 'Réservations');
+        yield MenuItem::section('Soirées');
 
-        // Gestion de jeux
-        yield MenuItem::linkTo(JeuCrudController::class, 'Jeux');
-        yield MenuItem::linkTo(CategorieCrudController::class, 'Catégories');
+        yield MenuItem::linkTo(SoireeJeuCrudController::class, 'Soirées', 'fas fa-book');
+        yield MenuItem::linkTo(ReservationCrudController::class, 'Réservations');
+        }
+    // #[Route('/dashboard', name: 'app_dashboard')]
+    // public function __construct(private AdminUrlGenerator $adminUrlGenerator)
+    // {
+    //     $this->adminUrlGenerator = $adminUrlGenerator;
+    // }
+    // public function index(): Response
+    // {
+    //     return $this->redirect(
+    //         $this->adminUrlGenerator
+    //             ->setController(JeuCrudController::class)
+    //             ->setAction(Action::INDEX)
+    //             ->generateUrl()
+    //     );
+    // }
+    
+    // public function configureDashboard(): Dashboard{
+    //     return Dashboard::new()
+    //         ->setTitle('Gamehub');
+    // }
+
+    // public function configureMenuItems(): iterable 
+    // {
+    //     yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+
+    //     yield MenuItem::section('Catalogue');
+
+    //     // Gestion de soirées
+    //     yield MenuItem::linkTo(SoireeJeuCrudController::class, 'Soirée jeux');
+    //     yield MenuItem::linkTo(ReservationCrudController::class, 'Réservations');
+
+    //     // Gestion de jeux
+    //     yield MenuItem::linkTo(JeuCrudController::class, 'Jeux');
+    //     yield MenuItem::linkTo(CategorieCrudController::class, 'Catégories');
         
-    }
+    // }
 }

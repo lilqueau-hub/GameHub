@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Clock\DatePoint;
+
 
 #[ORM\Entity(repositoryClass: SoireeJeuRepository::class)]
 class SoireeJeu
@@ -20,11 +20,11 @@ class SoireeJeu
     #[ORM\Column(length: 150)]
     private ?string $jeu_associe = null;
 
-    #[ORM\Column(type: 'day_point')]
-    private ?DatePoint $date_soiree = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $date_soiree = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 0)]
-    private ?string $nombre_Ãmax_participants = null;
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $nombre_max_participants = null;
 
     /**
      * @var Collection<int, Reservation>
@@ -33,7 +33,7 @@ class SoireeJeu
     private Collection $reservation;
 
     #[ORM\ManyToOne(inversedBy: 'soireeJeus')]
-    private ?Administrateur $adÃministrateur = null;
+    private ?Administrateur $administrateur = null;
 
     public function __construct()
     {
@@ -57,26 +57,26 @@ class SoireeJeu
         return $this;
     }
 
-    public function getDateSoiree(): ?DatePoint
+    public function getDateSoiree(): ?\DateTimeImmutable
     {
         return $this->date_soiree;
     }
 
-    public function setDateSoiree(DatePoint $date_soiree): static
+    public function setDateSoiree(\DateTimeImmutable $date_soiree): static
     {
         $this->date_soiree = $date_soiree;
 
         return $this;
     }
 
-    public function getNombreÃmaxParticipants(): ?string
+    public function getNombremaxParticipants(): ?int
     {
-        return $this->nombre_Ãmax_participants;
+        return $this->nombre_max_participants;
     }
 
-    public function setNombreÃmaxParticipants(string $nombre_Ãmax_participants): static
+    public function setNombremaxParticipants(int $nombre_max_participants): static
     {
-        $this->nombre_Ãmax_participants = $nombre_Ãmax_participants;
+        $this->nombre_max_participants = $nombre_max_participants;
 
         return $this;
     }
@@ -111,14 +111,14 @@ class SoireeJeu
         return $this;
     }
 
-    public function getAdÃministrateur(): ?Administrateur
+    public function getAdministrateur(): ?Administrateur
     {
-        return $this->adÃministrateur;
+        return $this->administrateur;
     }
 
-    public function setAdÃministrateur(?Administrateur $adÃministrateur): static
+    public function setAdministrateur(?Administrateur $administrateur): static
     {
-        $this->adÃministrateur = $adÃministrateur;
+        $this->administrateur = $administrateur;
 
         return $this;
     }
