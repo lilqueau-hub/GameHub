@@ -33,6 +33,10 @@ class Jeu
     #[ORM\Column]
     private ?int $nombre_joueurs = null;
 
+    #[ORM\ManyToOne(inversedBy: 'categories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categories = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,7 +114,6 @@ class Jeu
         return $this;
     }
 
-
     /**
      * @var Collection<int, Categorie>
      */
@@ -122,6 +125,7 @@ class Jeu
     {
         $this->categories = new ArrayCollection();
     }
+    
     /**
      * @return Collection<int, Categorie>
      */
