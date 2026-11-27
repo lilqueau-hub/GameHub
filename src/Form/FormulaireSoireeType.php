@@ -20,20 +20,7 @@ class FormulaireSoireeType extends AbstractType
                 'attr' => [
                     'class' => 'input-test'
                 ]
-            ])
-
-
-        //     $builder
-        //     ->add('titre')
-        //     ->add('age_minimum', DateTime::class, [
-        //     ])
-        //     ->add('Jeu', EntityType::class, [
-        //         'class' => Jeu::class,
-        //         'placeholder' => 'Choisir un type',
-        //         'attr' => [
-        //             'class' => 'input-test'
-        //         ]    
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

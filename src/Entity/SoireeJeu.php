@@ -35,6 +35,9 @@ class SoireeJeu
     #[ORM\ManyToOne(inversedBy: 'soireeJeus')]
     private ?Administrateur $administrateur = null;
 
+    #[ORM\ManyToOne(inversedBy: 'soireeJeus')]
+    private ?Jeu $jeusoiree = null;
+
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
@@ -119,6 +122,18 @@ class SoireeJeu
     public function setAdministrateur(?Administrateur $administrateur): static
     {
         $this->administrateur = $administrateur;
+
+        return $this;
+    }
+
+    public function getJeusoiree(): ?Jeu
+    {
+        return $this->jeusoiree;
+    }
+
+    public function setJeusoiree(?Jeu $jeusoiree): static
+    {
+        $this->jeusoiree = $jeusoiree;
 
         return $this;
     }

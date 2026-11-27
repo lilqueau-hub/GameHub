@@ -21,8 +21,21 @@ class Categorie
     #[ORM\ManyToOne(inversedBy: 'categories')]
     private ?Administrateur $administrateur = null;
 
-    // #[ORM\Column(length:50)]
-    // private ?string $titre = null;
+    /**
+     * @var Collection<int, Jeu>
+     */
+    #[ORM\ManyToMany(targetEntity: Jeu::class, mappedBy: 'categories')]
+    private Collection $jeux;
+
+    public function __construct()
+    {
+        $this->jeux = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom_categorie ?? '';
+    }
 
     public function getId(): ?int
     {
@@ -54,17 +67,6 @@ class Categorie
     }
 
     /**
-     * @var Collection<int, Jeu>
-     */
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Jeu::class)]
-    private Collection $jeux;
-
-    public function __construct() 
-    {
-        $this->jeux = new ArrayCollection();
-    }
-
-    /**
      * @return Collection<int, Jeu>
      */
     public function getJeux(): Collection
@@ -76,7 +78,7 @@ class Categorie
     {
         if (!$this->jeux->contains($jeu)) {
             $this->jeux->add($jeu);
-            $jeu->setCategorie($this);
+            $jeu->addCategorie($this);
         }
 
         return $this;
@@ -85,10 +87,9 @@ class Categorie
     public function removeJeu(Jeu $jeu): static
     {
         if ($this->jeux->removeElement($jeu)) {
-            throw new \LogicException('Assign another type before removing this game.');
+            $jeu->removeCategorie($this);
         }
 
         return $this;
     }
-
 }
