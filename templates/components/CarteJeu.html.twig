@@ -1,0 +1,8 @@
+<div{{ attributes }} class="carte-jeu" >
+    <h3>{{ jeu.titre }}</h3>
+
+    <form action= "{{ path('app_reservation', {'id': jeu.id})" method="POST" }}"
+        <input type="hidden" name"_token" value="{{ csrf_token('reserver_'~ jeu.id) }}">
+        <button type="submit">Réserver</button>
+    </form>
+</div>

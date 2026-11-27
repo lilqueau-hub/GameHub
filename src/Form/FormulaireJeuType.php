@@ -4,11 +4,10 @@ namespace App\Form;
 
 use App\Entity\Categorie;
 use App\Entity\Jeu;
-use DateTime;
-use Dom\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormulaireJeuType extends AbstractType
@@ -17,21 +16,15 @@ class FormulaireJeuType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('age_minimum', DateTime::class, [
-            ])
-            ->add('Jeu', EntityType::class, [
-                'class' => Jeu::class,
-                'placeholder' => 'Choisir un type',
-                'attr' => [
-                    'class' => 'input-test'
-                ]    
-            ])
-            ->add('categories', EntityType::class, [
+            ->add('age_minimum', IntegerType::class)
+            ->add('duree_moyenne', IntegerType::class)
+            ->add('nombre_joueurs', IntegerType::class)
+            ->add('description')
+            ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label'=>'nom',
-                'multiple' => true,
-                'expanded' => true,
-                'required' => false
+                'choice_label' => 'nomCategorie',
+                'placeholder' => 'Choisir une catégorie',
+                'required' => true,
             ])
         ;
     }
@@ -39,7 +32,7 @@ class FormulaireJeuType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => Jeu::class,
         ]);
     }
 }

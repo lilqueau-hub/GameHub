@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\JeuRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+// use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +24,7 @@ class Jeu
     #[ORM\Column]
     private ?int $duree_moyenne = null;
 
-    #[ORM\ManyToOne(inversedBy: 'jeus')]
+    #[ORM\ManyToOne(inversedBy: 'jeux')]
     private ?Administrateur $administrateur = null;
 
     #[ORM\Column]
@@ -35,7 +35,7 @@ class Jeu
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Categorie $categories = null;
+    private ?Categorie $categorie = null;
 
     public function getId(): ?int
     {
@@ -114,39 +114,46 @@ class Jeu
         return $this;
     }
 
-    /**
-     * @var Collection<int, Categorie>
-     */
-    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'jeux')]
-    #[ORM\JoinTable(name: 'jeu_categorie')]
-    private Collection $categories;
-
-    public function __construct() 
+    public function getCategories(): ?Categorie
     {
-        $this->categories = new ArrayCollection();
+        return $this->categorie;
     }
+    public function setCategorie(?Categorie $categorie)
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+    // /**
+    //  * @var Collection<int, Categorie>
+    //  */
+    // #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'jeux')]
+    // #[ORM\JoinTable(name: 'jeu_categorie')]
+    // private Collection $categories;
+
+    // public function __construct() 
+    // {
+    //     $this->categorie = new ArrayCollection();
+    // }
     
-    /**
-     * @return Collection<int, Categorie>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
+    //  /**
+    //   * @return Collection<int, Categorie>
+    //   */
+    
 
-    public function addCategorie(Categorie $categorie): static
-    {
-        if (!$this->categories->contains($categorie)) {
-            $this->categories->add($categorie);
-        }
+    // public function addCategorie(Categorie $categorie): static
+    // {
+    //     if (!$this->categorie->contains($categorie)) {
+    //         $this->categorie->add($categorie);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeCategorie(Categorie $categorie): static
-    {
-        $this->categories->removeElement($categorie);
+    // public function removeCategorie(Categorie $categorie): static
+    // {
+    //     $this->categories->removeElement($categorie);
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

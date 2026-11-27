@@ -56,7 +56,7 @@ class Categorie
     /**
      * @var Collection<int, Jeu>
      */
-    #[ORM\ManyToMany(targetEntity: Jeu::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Jeu::class)]
     private Collection $jeux;
 
     public function __construct() 
@@ -72,11 +72,11 @@ class Categorie
         return $this->jeux;
     }
 
-    public function addJeux(Jeu $jeu): static
+    public function addJeu(Jeu $jeu): static
     {
-        if(!$this->jeux->contains($jeu)) {
+        if (!$this->jeux->contains($jeu)) {
             $this->jeux->add($jeu);
-            $jeu->addCategorie($this);
+            $jeu->setCategorie($this);
         }
 
         return $this;
@@ -85,9 +85,10 @@ class Categorie
     public function removeJeu(Jeu $jeu): static
     {
         if ($this->jeux->removeElement($jeu)) {
-            $jeu->removeCategorie($this);
+            throw new \LogicException('Assign another type before removing this game.');
         }
 
         return $this;
     }
+
 }
